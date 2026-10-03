@@ -14,12 +14,13 @@
   header .sub { color:var(--dim); font-size:.85rem; }
   a { color:#58a6ff; }
   #map { position:fixed; top:57px; left:0; right:0; bottom:0; z-index:0; background:#0a0d12; }
-  #panel { position:fixed; z-index:1000; right:14px; top:71px; width:330px; max-height:calc(100vh - 90px); overflow:auto;
+  #panel { position:fixed; z-index:1000; right:14px; top:71px; width:340px; max-height:calc(100vh - 90px); overflow:auto;
            background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:none; }
   #panel h2 { margin:0 0 2px; font-size:1.05rem; }
   #panel .day { color:var(--accent); font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
-  #panel ul { margin:10px 0 0; padding-left:18px; }
-  #panel li { margin:5px 0; font-size:.9rem; line-height:1.4; }
+  #panel ul { margin:10px 0 0; padding-left:0; list-style:none; }
+  #panel li { margin:7px 0; font-size:.9rem; line-height:1.4; }
+  #panel li::before { content:"\U0001F4CD"; margin-right:6px; }
   #panel .close { position:absolute; top:8px; right:10px; cursor:pointer; color:var(--dim); font-size:1.1rem; }
   #legend { position:fixed; z-index:1000; left:14px; bottom:14px; background:var(--card); border:1px solid var(--line);
             border-radius:8px; padding:10px 12px; font-size:.8rem; color:var(--dim); }
@@ -31,7 +32,7 @@
 <body>
 <header>
   <h1>🗺️ Анды и Бразилия</h1>
-  <span class="sub">16 дней · Сан-Паулу → Мачу-Пикчу → Уюни → Атакама → Сантьяго · кликни точку на карте</span>
+  <span class="sub">16 дней · кликни точку на карте — увидишь список достопримечательностей со ссылками</span>
 </header>
 <div id="map"></div>
 <div id="panel">
@@ -46,27 +47,71 @@
 <script>
 const places = [
   {id:"sao", name:"Сан-Паулу, Бразилия", lat:-23.5505, lng:-46.6333, day:"День 1 · День 15–16",
-   what:["Прилёт в GRU — крупнейший хаб Южной Америки, самые дешёвые билеты из Европы/России","Акклиматизация, прогулка по Авенида Паулиста","День 16: вылет домой из GRU"]},
+   sights:[
+     ["Музей искусств MASP (Авенида Паулиста)","https://masp.org.br"],
+     ["Парк Ибирапуэра","https://en.wikipedia.org/wiki/Ibirapuera_Park"],
+     ["Собор Се (Catedral da Sé)","https://en.wikipedia.org/wiki/S%C3%A3o_Paulo_Cathedral"]
+   ]},
   {id:"lim", name:"Лима, Перу", lat:-12.0464, lng:-77.0428, day:"День 2",
-   what:["Перелёт из Сан-Паулу (Sky Airline / JetSMART, $130–200)","Район Мирафлорес, парк Любви","Закат над Тихим океаном"]},
+   sights:[
+     ["Парк Любви (Parque del Amor), Мирафлорес","https://en.wikipedia.org/wiki/Parque_del_Amor"],
+     ["Исторический центр Лимы (ЮНЕСКО)","https://whc.unesco.org/en/list/500"],
+     ["Пласа-Майор и монастырь Сан-Франсиско","https://en.wikipedia.org/wiki/Plaza_Mayor,_Lima"]
+   ]},
   {id:"cus", name:"Куско, Перу", lat:-13.5319, lng:-71.9675, day:"День 3–4 · День 6",
-   what:["Перелёт из Лимы (JetSMART / Sky, $26–42)","Акклиматизация на высоте 3400 м — много воды, без алкоголя","Кориканча (Храм Солнца) и крепость Саксайуаман","Возврат из Мачу-Пикчу вечером Дня 6"]},
+   sights:[
+     ["Кориканча (Храм Солнца)","https://en.wikipedia.org/wiki/Coricancha"],
+     ["Крепость Саксайуаман","https://en.wikipedia.org/wiki/Sacsayhuam%C3%A1n"],
+     ["Исторический центр Куско (ЮНЕСКО)","https://whc.unesco.org/en/list/273"]
+   ]},
   {id:"oll", name:"Ольянтайтамбо, Священная долина", lat:-13.2584, lng:-72.2645, day:"День 4–5",
-   what:["Переезд из Куско (2800 м) для акклиматизации","Руины Писак и рынок ремесленников","Крепость Ольянтайтамбо","Вечерний поезд (~1,5 ч) до Агуас-Кальентес"]},
+   sights:[
+     ["Крепость Ольянтайтамбо","https://en.wikipedia.org/wiki/Ollantaytambo"],
+     ["Руины Писак","https://en.wikipedia.org/wiki/P%C3%ADsac"],
+     ["Рынок ремесленников Писак (фото)","https://www.google.com/search?q=Pisac+market&tbm=isch"]
+   ]},
   {id:"mp", name:"Мачу-Пикчу, Перу", lat:-13.1631, lng:-72.545, day:"День 5–6",
-   what:["Ранний подъём, автобус к цитадели","Встреча рассвета, экскурсия с гидом (2 часа)","Дневной поезд обратно в Куско"]},
+   sights:[
+     ["Мачу-Пикчу — официальный сайт (билеты)","https://www.machupicchu.gob.pe"],
+     ["Мачу-Пикчу (ЮНЕСКО)","https://whc.unesco.org/en/list/274"],
+     ["Гора Уайна-Пикчу","https://en.wikipedia.org/wiki/Huayna_Picchu"]
+   ]},
   {id:"pun", name:"Пуно, оз. Титикака", lat:-15.8402, lng:-70.0219, day:"День 7–8",
-   what:["Туристический автобус из Куско (6–7 ч): Пукара, Андауайлильяс, перевал Ла-Рая","Лодочная прогулка на плавучие острова Урос из тростника","Размещение на берегу озера"]},
+   sights:[
+     ["Плавучие острова Урос","https://en.wikipedia.org/wiki/Uru_people"],
+     ["Озеро Титикака","https://en.wikipedia.org/wiki/Lake_Titicaca"],
+     ["Погребальные башни Сильустани","https://en.wikipedia.org/wiki/Sillustani"]
+   ]},
   {id:"lap", name:"Ла-Пас, Боливия", lat:-16.4897, lng:-68.1193, day:"День 8–9",
-   what:["Переезд через границу и автобус (3–4 ч, 3600 м)","Канатная дорога Mi Teleférico","Площадь Мурильо и Дворец правительства","Вечерний перелёт в Уюни (BoA, от $91)"]},
+   sights:[
+     ["Канатная дорога Mi Teleférico — официальный сайт","https://www.miteleferico.bo"],
+     ["Площадь Мурильо","https://en.wikipedia.org/wiki/Plaza_Murillo"],
+     ["Лунная долина (Valle de la Luna)","https://en.wikipedia.org/wiki/Valle_de_la_Luna_(Bolivia)"]
+   ]},
   {id:"uyu", name:"Уюни, Боливия", lat:-20.4597, lng:-66.825, day:"День 9–11",
-   what:["Экспедиция на джипах по солончаку (2 дня)","«Эффект зеркала» — высокая вероятность в феврале","Отель из соли (ночёвка)","Остров Инкауаси, лагуны с фламинго, гейзеры"]},
+   sights:[
+     ["Солончак Уюни","https://en.wikipedia.org/wiki/Salar_de_Uyuni"],
+     ["Остров Инкауаси","https://en.wikipedia.org/wiki/Incahuasi_Island"],
+     ["Резерват Эдуардо Авароа (лагуны, фламинго)","https://en.wikipedia.org/wiki/Eduardo_Avaroa_Andean_Fauna_National_Reserve"]
+   ]},
   {id:"spd", name:"Сан-Педро-де-Атакама, Чили", lat:-22.9087, lng:-68.1999, day:"День 12–13",
-   what:["Джип-тур через лагуны Колорадо и Верде до границы Чили","Оазис посреди пустыни Атакама","Гейзеры Эль-Татио на рассвете (выезд в 4 утра)","Днём — перелёт из Каламы (CJC) в Сантьяго, от $38"]},
+   sights:[
+     ["Гейзеры Эль-Татио","https://en.wikipedia.org/wiki/El_Tatio"],
+     ["Лунная долина (Valle de la Luna)","https://en.wikipedia.org/wiki/Valle_de_la_Luna_(Chile)"],
+     ["Резерват Лос-Фламенкос (фламинго)","https://en.wikipedia.org/wiki/Los_Flamencos_National_Reserve"]
+   ]},
   {id:"scl", name:"Сантьяго, Чили", lat:-33.4489, lng:-70.6693, day:"День 13–15",
-   what:["Перелёт из Каламы (JetSMART, от $38)","Пласа-де-Армас и Кафедральный собор","Холм Санта-Лусия","Вечером Дня 15 — перелёт в Сан-Паулу (Sky/LATAM, $150–200)"]},
+   sights:[
+     ["Холм Санта-Лусия","https://en.wikipedia.org/wiki/Santa_Luc%C3%ADa_Hill"],
+     ["Пласа-де-Армас и Кафедральный собор","https://en.wikipedia.org/wiki/Plaza_de_Armas_(Santiago)"],
+     ["Парк Метрополитано (холм Сан-Кристобаль) — официальный сайт","https://www.parquemet.cl"]
+   ]},
   {id:"val", name:"Вальпараисо, Чили", lat:-33.0472, lng:-71.6127, day:"День 14",
-   what:["Однодневная поездка из Сантьяго","Город-порт с разноцветными домами и фуникулёрами","Объект ЮНЕСКО","Вечерний автобус обратно в Сантьяго"]}
+   sights:[
+     ["Фуникулёры Вальпараисо","https://en.wikipedia.org/wiki/Funicular_railways_of_Valpara%C3%ADso"],
+     ["Музей под открытым небом (Museo a Cielo Abierto)","https://en.wikipedia.org/wiki/Museo_a_Cielo_Abierto"],
+     ["Исторический квартал Вальпараисо (ЮНЕСКО)","https://whc.unesco.org/en/list/959"]
+   ]}
 ];
 
 const flights = [
@@ -90,7 +135,8 @@ ground.forEach(g=>line(g[0],g[1],true).addTo(map));
 function show(p){
   document.getElementById('p-day').textContent = p.day;
   document.getElementById('p-title').textContent = p.name;
-  document.getElementById('p-list').innerHTML = p.what.map(w=>`<li>${w}</li>`).join('');
+  document.getElementById('p-list').innerHTML = p.sights
+    .map(s=>`<li><a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a></li>`).join('');
   document.getElementById('panel').style.display = 'block';
 }
 
