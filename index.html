@@ -27,15 +27,37 @@
   #legend .fly { color:#f0883e; } #legend .ground { color:#58a6ff; }
   .leaflet-interactive { cursor:pointer; }
   .leaflet-popup-content-wrapper, .leaflet-popup-tip { background:var(--card); color:var(--text); }
-  @media (max-width:720px){ #panel{ width:calc(100vw - 28px); right:14px; } }
+  header nav#tabs { margin-left:auto; display:flex; gap:8px; }
+  .tab { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px;
+         padding:7px 14px; font-size:.85rem; cursor:pointer; }
+  .tab.active { background:var(--accent); border-color:var(--accent); color:#0d1117; font-weight:600; }
+  #budget-tab { display:none; position:fixed; top:57px; left:0; right:0; bottom:0; overflow:auto;
+                padding:20px; max-width:900px; margin:0 auto; }
+  #budget-tab h2 { font-size:1.15rem; margin:18px 0 8px; }
+  #budget-tab table { width:100%; border-collapse:collapse; font-size:.85rem; background:var(--card);
+                      border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  #budget-tab th, #budget-tab td { padding:7px 9px; border-bottom:1px solid var(--line); text-align:left; }
+  #budget-tab th { background:#1c2128; color:var(--accent); font-weight:600; white-space:nowrap; }
+  #budget-tab tr.total td { font-weight:700; background:#1c2128; }
+  #budget-tab td.num { text-align:right; white-space:nowrap; }
+  .cards { display:flex; gap:14px; flex-wrap:wrap; margin:14px 0; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 18px; }
+  .card .v { font-size:1.35rem; font-weight:700; color:var(--accent); }
+  .card .l { font-size:.75rem; color:var(--dim); text-transform:uppercase; letter-spacing:.05em; }
+  .flist li { margin:6px 0; font-size:.9rem; }
+  @media (max-width:720px){ #panel{ width:calc(100vw - 28px); right:14px; } #budget-tab{ padding:12px; } }
 </style>
 </head>
 <body>
 <header>
   <h1>🗺️ Анды и Бразилия</h1>
-  <span class="sub">16 дней · кликни точку на карте — увидишь список достопримечательностей со ссылками</span>
+  <nav id="tabs">
+    <button class="tab active" onclick="openTab('map', this)">Карта</button>
+    <button class="tab" onclick="openTab('budget', this)">Стоимость по дням</button>
+  </nav>
+  <span class="sub">16 дней · 2 человека</span>
 </header>
-<div id="map"></div>
+<div id="map-tab"><div id="map"></div></div>
 <div id="panel">
   <span class="close" onclick="document.getElementById('panel').style.display='none'">✕</span>
   <div class="day" id="p-day"></div>
@@ -44,6 +66,47 @@
 </div>
 <div id="legend">— <span class="fly">перелёт</span> &nbsp; - - <span class="ground">наземный переезд</span></div>
 
+<div id="budget-tab">
+  <h2>💰 Стоимость по дням · 2 человека (совместный номер)</h2>
+  <div class="cards">
+    <div class="card"><div class="v">$6 333</div><div class="l">всего за 16 дней</div></div>
+    <div class="card"><div class="v">$3 167</div><div class="l">на человека</div></div>
+    <div class="card"><div class="v">≈ 528 800 ₽</div><div class="l">курс 83,5 ₽/$</div></div>
+  </div>
+  <table>
+    <tr><th>День</th><th>Этап / город</th><th class="num">Проживание</th><th class="num">Питание</th><th class="num">Транспорт</th><th class="num">Билеты</th><th class="num">Итого</th></tr>
+    <tr><td>1</td><td>Прилёт в Сан-Паулу (GRU)</td><td class="num">$60</td><td class="num">$50</td><td class="num">$1 300</td><td class="num">—</td><td class="num">$1 410</td></tr>
+    <tr><td>2</td><td>Перелёт в Лиму</td><td class="num">$65</td><td class="num">$50</td><td class="num">$330</td><td class="num">—</td><td class="num">$445</td></tr>
+    <tr><td>3</td><td>Перелёт в Куско, акклиматизация</td><td class="num">$50</td><td class="num">$50</td><td class="num">$68</td><td class="num">—</td><td class="num">$168</td></tr>
+    <tr><td>4</td><td>Священная долина, Ольянтайтамбо</td><td class="num">$60</td><td class="num">$50</td><td class="num">—</td><td class="num">$70</td><td class="num">$180</td></tr>
+    <tr><td>5</td><td>Мачу-Пикчу (ночь в Агуас-Кальентес)</td><td class="num">$80</td><td class="num">$50</td><td class="num">—</td><td class="num">$268</td><td class="num">$398</td></tr>
+    <tr><td>6</td><td>Мачу-Пикчу, возврат в Куско</td><td class="num">$50</td><td class="num">$50</td><td class="num">—</td><td class="num">$120</td><td class="num">$220</td></tr>
+    <tr><td>7</td><td>Автобус Куско → Пуно (Титикака)</td><td class="num">$45</td><td class="num">$50</td><td class="num">$70</td><td class="num">—</td><td class="num">$165</td></tr>
+    <tr><td>8</td><td>Острова Урос, переезд в Ла-Пас</td><td class="num">$55</td><td class="num">$50</td><td class="num">$90</td><td class="num">$30</td><td class="num">$225</td></tr>
+    <tr><td>9</td><td>Ла-Пас, вечерний перелёт в Уюни</td><td class="num">$60</td><td class="num">$50</td><td class="num">$200</td><td class="num">$2</td><td class="num">$312</td></tr>
+    <tr><td>10</td><td>Экспедиция Уюни (отель из соли)</td><td class="num">вкл.</td><td class="num">вкл.</td><td class="num">—</td><td class="num">$180</td><td class="num">$180</td></tr>
+    <tr><td>11</td><td>Экспедиция Уюни (Инкауаси, лагуны)</td><td class="num">вкл.</td><td class="num">вкл.</td><td class="num">—</td><td class="num">$180</td><td class="num">$180</td></tr>
+    <tr><td>12</td><td>Джип-тур в Сан-Педро-де-Атакама</td><td class="num">$70</td><td class="num">$50</td><td class="num">$180</td><td class="num">—</td><td class="num">$300</td></tr>
+    <tr><td>13</td><td>Гейзеры Эль-Татио, перелёт в Сантьяго</td><td class="num">$65</td><td class="num">$50</td><td class="num">$90</td><td class="num">—</td><td class="num">$205</td></tr>
+    <tr><td>14</td><td>Вальпараисо (однодневная поездка)</td><td class="num">$65</td><td class="num">$50</td><td class="num">$30</td><td class="num">$10</td><td class="num">$155</td></tr>
+    <tr><td>15</td><td>Сантьяго, вечером в Сан-Паулу</td><td class="num">$60</td><td class="num">$50</td><td class="num">$350</td><td class="num">—</td><td class="num">$460</td></tr>
+    <tr><td>16</td><td>Вылет домой из GRU</td><td class="num">—</td><td class="num">$30</td><td class="num">$1 300</td><td class="num">—</td><td class="num">$1 330</td></tr>
+    <tr class="total"><td></td><td>ИТОГО (двое)</td><td class="num">$785</td><td class="num">$680</td><td class="num">$4 008</td><td class="num">$860</td><td class="num">$6 333</td></tr>
+  </table>
+
+  <h2>✈️ Все перелёты (на двоих)</h2>
+  <ul class="flist">
+    <li>Москва → Сан-Паулу (GRU) — ≈ $1 300 · <a href="https://www.skyscanner.net/transport/flights/mow/gru/" target="_blank" rel="noopener">поиск</a></li>
+    <li>Сан-Паулу (GRU) → Лима (LIM) — $330 (Sky/JetSMART) · <a href="https://www.skyscanner.net/transport/flights/gru/lim/" target="_blank" rel="noopener">поиск</a></li>
+    <li>Лима (LIM) → Куско (CUZ) — $68 (JetSMART/Sky) · <a href="https://www.skyscanner.net/transport/flights/lim/cuz/" target="_blank" rel="noopener">поиск</a></li>
+    <li>Ла-Пас (LPB) → Уюни (UYU) — $200 (Boliviana de Aviación) · <a href="https://www.boa.bo/" target="_blank" rel="noopener">boa.bo</a></li>
+    <li>Калама (CJC) → Сантьяго (SCL) — $90 (JetSMART/Sky) · <a href="https://www.skyscanner.net/transport/flights/cjc/scl/" target="_blank" rel="noopener">поиск</a></li>
+    <li>Сантьяго (SCL) → Сан-Паулу (GRU) — $350 (Sky/LATAM) · <a href="https://www.skyscanner.net/transport/flights/scl/gru/" target="_blank" rel="noopener">поиск</a></li>
+    <li>Сан-Паулу (GRU) → Москва — ≈ $1 300 · <a href="https://www.skyscanner.net/transport/flights/gru/mow/" target="_blank" rel="noopener">поиск</a></li>
+  </ul>
+  <p style="color:var(--dim);font-size:.8rem">Перелёты — $3 638 · наземные переезды (автобусы, джип-тур) — $370 · отели 3–4* (один номер на двоих), завтраки включены · питание ~$25/чел/день · февраль.
+  Полная таблица: <a href="https://docs.google.com/spreadsheets/d/1_YSq8fh9erDR7l8WCrpSWixxVAdvdFD7SJVokQ5PyBU/edit" target="_blank" rel="noopener">Google-таблица</a></p>
+</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const places = [
@@ -156,6 +219,13 @@ places.forEach(p=>{
 });
 
 show(places[0]);
+
+function openTab(which, btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
+  document.getElementById('map-tab').style.display = which==='map' ? 'block' : 'none';
+  document.getElementById('budget-tab').style.display = which==='budget' ? 'block' : 'none';
+  if(which==='map') setTimeout(()=>map.invalidateSize(), 50);
+}
 </script>
 </body>
 </html>
