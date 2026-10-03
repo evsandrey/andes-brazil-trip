@@ -18,9 +18,8 @@
            background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:none; }
   #panel h2 { margin:0 0 2px; font-size:1.05rem; }
   #panel .day { color:var(--accent); font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
-  #panel ul { margin:10px 0 0; padding-left:0; list-style:none; }
+  #panel ul { margin:10px 0 0; padding-left:18px; list-style:disc; }
   #panel li { margin:7px 0; font-size:.9rem; line-height:1.4; }
-  #panel li::before { content:"\U0001F4CD"; margin-right:6px; }
   #panel .close { position:absolute; top:8px; right:10px; cursor:pointer; color:var(--dim); font-size:1.1rem; }
   #legend { position:fixed; z-index:1000; left:14px; bottom:14px; background:var(--card); border:1px solid var(--line);
             border-radius:8px; padding:10px 12px; font-size:.8rem; color:var(--dim); }
@@ -45,7 +44,23 @@
   .card .v { font-size:1.35rem; font-weight:700; color:var(--accent); }
   .card .l { font-size:.75rem; color:var(--dim); text-transform:uppercase; letter-spacing:.05em; }
   .flist li { margin:6px 0; font-size:.9rem; }
-  @media (max-width:720px){ #panel{ width:calc(100vw - 28px); right:14px; } #budget-tab{ padding:12px; } }
+  @media (max-width:720px){
+  header { flex-wrap:wrap; gap:8px; padding:10px 12px; }
+  header h1 { font-size:1rem; }
+  header .sub { font-size:.72rem; }
+  header nav#tabs { width:100%; margin-left:0; order:3; }
+  .tab { flex:1; text-align:center; padding:8px 6px; font-size:.8rem; }
+  #map { top:106px; }
+  #budget-tab { top:106px; padding:10px; }
+  #panel { left:10px; right:10px; top:auto; bottom:10px; width:auto; max-height:52vh; }
+  #legend { left:8px; bottom:8px; padding:6px 9px; font-size:.7rem; }
+  .twrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #budget-tab table { font-size:.75rem; min-width:620px; }
+  #budget-tab th, #budget-tab td { padding:5px 6px; }
+  .cards { gap:8px; }
+  .card { padding:10px 12px; flex:1; min-width:90px; }
+  .card .v { font-size:1.05rem; }
+}
 </style>
 </head>
 <body>
@@ -73,7 +88,7 @@
     <div class="card"><div class="v">$3 167</div><div class="l">на человека</div></div>
     <div class="card"><div class="v">≈ 528 800 ₽</div><div class="l">курс 83,5 ₽/$</div></div>
   </div>
-  <table>
+  <div class="twrap"><table>
     <tr><th>День</th><th>Этап / город</th><th class="num">Проживание</th><th class="num">Питание</th><th class="num">Транспорт</th><th class="num">Билеты</th><th class="num">Итого</th></tr>
     <tr><td>1</td><td>Прилёт в Сан-Паулу (GRU)</td><td class="num">$60</td><td class="num">$50</td><td class="num">$1 300</td><td class="num">—</td><td class="num">$1 410</td></tr>
     <tr><td>2</td><td>Перелёт в Лиму</td><td class="num">$65</td><td class="num">$50</td><td class="num">$330</td><td class="num">—</td><td class="num">$445</td></tr>
@@ -92,7 +107,7 @@
     <tr><td>15</td><td>Сантьяго, вечером в Сан-Паулу</td><td class="num">$60</td><td class="num">$50</td><td class="num">$350</td><td class="num">—</td><td class="num">$460</td></tr>
     <tr><td>16</td><td>Вылет домой из GRU</td><td class="num">—</td><td class="num">$30</td><td class="num">$1 300</td><td class="num">—</td><td class="num">$1 330</td></tr>
     <tr class="total"><td></td><td>ИТОГО (двое)</td><td class="num">$785</td><td class="num">$680</td><td class="num">$4 008</td><td class="num">$860</td><td class="num">$6 333</td></tr>
-  </table>
+  </table></div>
 
   <h2>✈️ Все перелёты (на двоих)</h2>
   <ul class="flist">
