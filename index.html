@@ -116,14 +116,14 @@ const places = [
 ];
 
 const legs = [
-  {a:"sao", b:"lim", type:"Перелёт",  route:"Сан-Паулу → Лима",               airline:"Sky Airline / JetSMART",      price:"$130–200"},
-  {a:"lim", b:"cus", type:"Перелёт",  route:"Лима → Куско",                   airline:"JetSMART / Sky Airline",      price:"$26–42"},
-  {a:"cus", b:"pun", type:"Автобус",  route:"Куско → Пуно (оз. Титикака)",    airline:"Turismo Mer / Cruz del Sur",  price:"~$25–45"},
-  {a:"pun", b:"lap", type:"Автобус",  route:"Пуно → Ла-Пас (+ граница)",      airline:"Bolivia Hop",                 price:"~$30–60"},
-  {a:"lap", b:"uyu", type:"Перелёт",  route:"Ла-Пас → Уюни",                  airline:"Boliviana de Aviación",       price:"от $91"},
-  {a:"uyu", b:"spd", type:"Джип-тур", route:"Уюни → Сан-Педро-де-Атакама",    airline:"местные агентства",           price:"$60–120"},
-  {a:"spd", b:"scl", type:"Перелёт",  route:"Калама (CJC) → Сантьяго",        airline:"JetSMART / Sky Airline",      price:"от $38"},
-  {a:"scl", b:"sao", type:"Перелёт",  route:"Сантьяго → Сан-Паулу",           airline:"Sky Airline / LATAM",         price:"$150–200"}
+  {a:"sao", b:"lim", type:"Перелёт", route:"Сан-Паулу → Лима", airline:"Sky Airline, JetSMART", price:"$130–200"},
+  {a:"lim", b:"cus", type:"Перелёт", route:"Лима → Куско", airline:"JetSMART, Sky Airline", price:"$26–42"},
+  {a:"cus", b:"pun", type:"Автобус", route:"Куско → Пуно (оз. Титикака)", airline:"Turismo Mer, Cruz del Sur", price:"~$25–45"},
+  {a:"pun", b:"lap", type:"Автобус", route:"Пуно → Ла-Пас (+ граница)", airline:"Bolivia Hop", price:"~$30–60"},
+  {a:"lap", b:"uyu", type:"Перелёт", route:"Ла-Пас → Уюни", airline:"Boliviana de Aviación", price:"от $91"},
+  {a:"uyu", b:"spd", type:"Джип-тур", route:"Уюни → Сан-Педро-де-Атакама", airline:"местные агентства", price:"$60–120"},
+  {a:"spd", b:"scl", type:"Перелёт", route:"Калама (CJC) → Сантьяго", airline:"JetSMART, Sky Airline", price:"от $38"},
+  {a:"scl", b:"sao", type:"Перелёт", route:"Сантьяго → Сан-Паулу", airline:"Sky Airline, LATAM", price:"$150–200"},
 ];
 const byId = Object.fromEntries(places.map(p=>[p.id,p]));
 
