@@ -111,16 +111,16 @@
 
   <h2>✈️ Все перелёты (на двоих)</h2>
   <ul class="flist">
-    <li>Москва → Сан-Паулу (GRU) — ≈ $1 300 · <a href="https://www.skyscanner.net/transport/flights/mow/gru/" target="_blank" rel="noopener">поиск</a></li>
-    <li>Сан-Паулу (GRU) → Лима (LIM) — $330 (Sky/JetSMART) · <a href="https://www.skyscanner.net/transport/flights/gru/lim/" target="_blank" rel="noopener">поиск</a></li>
-    <li>Лима (LIM) → Куско (CUZ) — $68 (JetSMART/Sky) · <a href="https://www.skyscanner.net/transport/flights/lim/cuz/" target="_blank" rel="noopener">поиск</a></li>
-    <li>Ла-Пас (LPB) → Уюни (UYU) — $200 (Boliviana de Aviación) · <a href="https://www.boa.bo/" target="_blank" rel="noopener">boa.bo</a></li>
-    <li>Калама (CJC) → Сантьяго (SCL) — $90 (JetSMART/Sky) · <a href="https://www.skyscanner.net/transport/flights/cjc/scl/" target="_blank" rel="noopener">поиск</a></li>
-    <li>Сантьяго (SCL) → Сан-Паулу (GRU) — $350 (Sky/LATAM) · <a href="https://www.skyscanner.net/transport/flights/scl/gru/" target="_blank" rel="noopener">поиск</a></li>
-    <li>Сан-Паулу (GRU) → Москва — ≈ $1 300 · <a href="https://www.skyscanner.net/transport/flights/gru/mow/" target="_blank" rel="noopener">поиск</a></li>
+    <li>Москва → Сан-Паулу (GRU) — ≈ $1 300 · <a href="https://www.aviasales.ru/search/MOWGRU" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=MOW&destination=GRU" target="_blank" rel="noopener">Островок</a></li>
+    <li>Сан-Паулу (GRU) → Лима (LIM) — $330 (Sky/JetSMART) · <a href="https://www.aviasales.ru/search/GRULIM" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=GRU&destination=LIM" target="_blank" rel="noopener">Островок</a></li>
+    <li>Лима (LIM) → Куско (CUZ) — $68 (JetSMART/Sky) · <a href="https://www.aviasales.ru/search/LIMCUZ" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=LIM&destination=CUZ" target="_blank" rel="noopener">Островок</a></li>
+    <li>Ла-Пас (LPB) → Уюни (UYU) — $200 (Boliviana de Aviación) · <a href="https://www.aviasales.ru/search/LPBUYU" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=LPB&destination=UYU" target="_blank" rel="noopener">Островок</a> · <a href="https://www.boa.bo/" target="_blank" rel="noopener">boa.bo</a></li>
+    <li>Калама (CJC) → Сантьяго (SCL) — $90 (JetSMART/Sky) · <a href="https://www.aviasales.ru/search/CJCSCL" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=CJC&destination=SCL" target="_blank" rel="noopener">Островок</a></li>
+    <li>Сантьяго (SCL) → Сан-Паулу (GRU) — $350 (Sky/LATAM) · <a href="https://www.aviasales.ru/search/SCLGRU" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=SCL&destination=GRU" target="_blank" rel="noopener">Островок</a></li>
+    <li>Сан-Паулу (GRU) → Москва — ≈ $1 300 · <a href="https://www.aviasales.ru/search/GRUMOW" target="_blank" rel="noopener">Авиасейлс</a> · <a href="https://avia.ostrovok.ru/?origin=GRU&destination=MOW" target="_blank" rel="noopener">Островок</a></li>
   </ul>
   <p style="color:var(--dim);font-size:.8rem">Перелёты — $3 638 · наземные переезды (автобусы, джип-тур) — $370 · отели 3–4* (один номер на двоих), завтраки включены · питание ~$25/чел/день · февраль.
-  Полная таблица: <a href="https://docs.google.com/spreadsheets/d/1_YSq8fh9erDR7l8WCrpSWixxVAdvdFD7SJVokQ5PyBU/edit" target="_blank" rel="noopener">Google-таблица</a></p>
+  Полная таблица: <a href="https://docs.google.com/spreadsheets/d/1_YSq8fh9erDR7l8WCrpSWixxVAdvdFD7SJVokQ5PyBU/edit" target="_blank" rel="noopener">Google-таблица</a> · поиск билетов: Авиасейлс и Островок</p>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -194,14 +194,14 @@ const places = [
 ];
 
 const legs = [
-  {a:"sao", b:"lim", type:"Перелёт", route:"Сан-Паулу → Лима", airline:"Sky Airline, JetSMART", price:"$130–200"},
-  {a:"lim", b:"cus", type:"Перелёт", route:"Лима → Куско", airline:"JetSMART, Sky Airline", price:"$26–42"},
-  {a:"cus", b:"pun", type:"Автобус", route:"Куско → Пуно (оз. Титикака)", airline:"Turismo Mer, Cruz del Sur", price:"~$25–45"},
-  {a:"pun", b:"lap", type:"Автобус", route:"Пуно → Ла-Пас (+ граница)", airline:"Bolivia Hop", price:"~$30–60"},
-  {a:"lap", b:"uyu", type:"Перелёт", route:"Ла-Пас → Уюни", airline:"Boliviana de Aviación", price:"от $91"},
+  {a:"sao", b:"lim", type:"Перелёт", route:"Сан-Паулу → Лима", airline:"Sky Airline, JetSMART", price:"$130–200", avia:"https://www.aviasales.ru/search/GRULIM", ostro:"https://avia.ostrovok.ru/?origin=GRU&destination=LIM"},
+  {a:"lim", b:"cus", type:"Перелёт", route:"Лима → Куско", airline:"JetSMART, Sky Airline", price:"$26–42", avia:"https://www.aviasales.ru/search/LIMCUZ", ostro:"https://avia.ostrovok.ru/?origin=LIM&destination=CUZ"},
+  {a:"cus", b:"pun", type:"Автобус", route:"Куско → Пуно (оз. Титикака)", airline:"Turismo Mer, Cruz del Sur", price:"~$25–45", bus:"https://www.busbud.com/en/bus-schedules/cusco-puno"},
+  {a:"pun", b:"lap", type:"Автобус", route:"Пуно → Ла-Пас (+ граница)", airline:"Bolivia Hop", price:"~$30–60", bus:"https://www.boliviahop.com/"},
+  {a:"lap", b:"uyu", type:"Перелёт", route:"Ла-Пас → Уюни", airline:"Boliviana de Aviación", price:"от $91", avia:"https://www.aviasales.ru/search/LPBUYU", ostro:"https://avia.ostrovok.ru/?origin=LPB&destination=UYU"},
   {a:"uyu", b:"spd", type:"Джип-тур", route:"Уюни → Сан-Педро-де-Атакама", airline:"местные агентства", price:"$60–120"},
-  {a:"spd", b:"scl", type:"Перелёт", route:"Калама (CJC) → Сантьяго", airline:"JetSMART, Sky Airline", price:"от $38"},
-  {a:"scl", b:"sao", type:"Перелёт", route:"Сантьяго → Сан-Паулу", airline:"Sky Airline, LATAM", price:"$150–200"},
+  {a:"spd", b:"scl", type:"Перелёт", route:"Калама (CJC) → Сантьяго", airline:"JetSMART, Sky Airline", price:"от $38", avia:"https://www.aviasales.ru/search/CJCSCL", ostro:"https://avia.ostrovok.ru/?origin=CJC&destination=SCL"},
+  {a:"scl", b:"sao", type:"Перелёт", route:"Сантьяго → Сан-Паулу", airline:"Sky Airline, LATAM", price:"$150–200", avia:"https://www.aviasales.ru/search/SCLGRU", ostro:"https://avia.ostrovok.ru/?origin=SCL&destination=GRU"},
 ];
 const byId = Object.fromEntries(places.map(p=>[p.id,p]));
 
@@ -216,7 +216,12 @@ legs.forEach(leg=>{
     {color:isGround?'#58a6ff':'#f0883e', weight:4, dashArray:isGround?'6 8':null, opacity:.85})
     .addTo(map);
   l.bindTooltip(`<b>${leg.route}</b><br>${leg.price}`, {sticky:true, direction:'top'});
-  l.bindPopup(`<b>${leg.route}</b><br>${leg.type} · ${leg.airline}<br><b style="color:#f0883e">${leg.price}</b> в одну сторону`);
+  const links = [];
+  if(leg.avia) links.push(`<a href="${leg.avia}" target="_blank" rel="noopener">Авиасейлс</a>`);
+  if(leg.ostro) links.push(`<a href="${leg.ostro}" target="_blank" rel="noopener">Островок</a>`);
+  if(leg.bus) links.push(`<a href="${leg.bus}" target="_blank" rel="noopener">билеты</a>`);
+  const lh = links.length ? `<br>поиск: ${links.join(' · ')}` : '';
+  l.bindPopup(`<b>${leg.route}</b><br>${leg.type} · ${leg.airline}<br><b style="color:#f0883e">${leg.price}</b> в одну сторону${lh}`);
 });
 
 function show(p){
