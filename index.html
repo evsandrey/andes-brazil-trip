@@ -25,6 +25,7 @@
   #legend { position:fixed; z-index:1000; left:14px; bottom:14px; background:var(--card); border:1px solid var(--line);
             border-radius:8px; padding:10px 12px; font-size:.8rem; color:var(--dim); }
   #legend .fly { color:#f0883e; } #legend .ground { color:#58a6ff; }
+  .leaflet-interactive { cursor:pointer; }
   .leaflet-popup-content-wrapper, .leaflet-popup-tip { background:var(--card); color:var(--text); }
   @media (max-width:720px){ #panel{ width:calc(100vw - 28px); right:14px; } }
 </style>
@@ -114,11 +115,15 @@ const places = [
    ]}
 ];
 
-const flights = [
-  ["sao","lim"],["lim","cus"],["lap","uyu"],["spd","scl"],["scl","sao"]
-];
-const ground = [
-  ["cus","pun"],["pun","lap"],["uyu","spd"]
+const legs = [
+  {a:"sao", b:"lim", type:"Перелёт",  route:"Сан-Паулу → Лима",               airline:"Sky Airline / JetSMART",      price:"$130–200"},
+  {a:"lim", b:"cus", type:"Перелёт",  route:"Лима → Куско",                   airline:"JetSMART / Sky Airline",      price:"$26–42"},
+  {a:"cus", b:"pun", type:"Автобус",  route:"Куско → Пуно (оз. Титикака)",    airline:"Turismo Mer / Cruz del Sur",  price:"~$25–45"},
+  {a:"pun", b:"lap", type:"Автобус",  route:"Пуно → Ла-Пас (+ граница)",      airline:"Bolivia Hop",                 price:"~$30–60"},
+  {a:"lap", b:"uyu", type:"Перелёт",  route:"Ла-Пас → Уюни",                  airline:"Boliviana de Aviación",       price:"от $91"},
+  {a:"uyu", b:"spd", type:"Джип-тур", route:"Уюни → Сан-Педро-де-Атакама",    airline:"местные агентства",           price:"$60–120"},
+  {a:"spd", b:"scl", type:"Перелёт",  route:"Калама (CJC) → Сантьяго",        airline:"JetSMART / Sky Airline",      price:"от $38"},
+  {a:"scl", b:"sao", type:"Перелёт",  route:"Сантьяго → Сан-Паулу",           airline:"Sky Airline / LATAM",         price:"$150–200"}
 ];
 const byId = Object.fromEntries(places.map(p=>[p.id,p]));
 
@@ -127,10 +132,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution:'© OpenStreetMap', maxZoom:18
 }).addTo(map);
 
-function line(a,b,dash){ return L.polyline([[byId[a].lat,byId[a].lng],[byId[b].lat,byId[b].lng]],
-  {color:dash?'#58a6ff':'#f0883e', weight:2.5, dashArray:dash?'6 8':null, opacity:.9}); }
-flights.forEach(f=>line(f[0],f[1],false).addTo(map));
-ground.forEach(g=>line(g[0],g[1],true).addTo(map));
+legs.forEach(leg=>{
+  const isGround = (leg.type !== 'Перелёт');
+  const l = L.polyline([[byId[leg.a].lat,byId[leg.a].lng],[byId[leg.b].lat,byId[leg.b].lng]],
+    {color:isGround?'#58a6ff':'#f0883e', weight:4, dashArray:isGround?'6 8':null, opacity:.85})
+    .addTo(map);
+  l.bindTooltip(`<b>${leg.route}</b><br>${leg.price}`, {sticky:true, direction:'top'});
+  l.bindPopup(`<b>${leg.route}</b><br>${leg.type} · ${leg.airline}<br><b style="color:#f0883e">${leg.price}</b> в одну сторону`);
+});
 
 function show(p){
   document.getElementById('p-day').textContent = p.day;
