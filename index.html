@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анды и Бразилия — 16 дней</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --line:#30363d; --accent:#f0883e; --text:#e6edf3; --dim:#8b949e; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--text); }
+  header { padding:14px 20px; display:flex; align-items:center; gap:14px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:1.15rem; margin:0; }
+  header .sub { color:var(--dim); font-size:.85rem; }
+  a { color:#58a6ff; }
+  #map { position:fixed; top:57px; left:0; right:0; bottom:0; z-index:0; background:#0a0d12; }
+  #panel { position:fixed; z-index:1000; right:14px; top:71px; width:330px; max-height:calc(100vh - 90px); overflow:auto;
+           background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:none; }
+  #panel h2 { margin:0 0 2px; font-size:1.05rem; }
+  #panel .day { color:var(--accent); font-size:.8rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
+  #panel ul { margin:10px 0 0; padding-left:18px; }
+  #panel li { margin:5px 0; font-size:.9rem; line-height:1.4; }
+  #panel .close { position:absolute; top:8px; right:10px; cursor:pointer; color:var(--dim); font-size:1.1rem; }
+  #legend { position:fixed; z-index:1000; left:14px; bottom:14px; background:var(--card); border:1px solid var(--line);
+            border-radius:8px; padding:10px 12px; font-size:.8rem; color:var(--dim); }
+  #legend .fly { color:#f0883e; } #legend .ground { color:#58a6ff; }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background:var(--card); color:var(--text); }
+  @media (max-width:720px){ #panel{ width:calc(100vw - 28px); right:14px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🗺️ Анды и Бразилия</h1>
+  <span class="sub">16 дней · Сан-Паулу → Мачу-Пикчу → Уюни → Атакама → Сантьяго · кликни точку на карте</span>
+</header>
+<div id="map"></div>
+<div id="panel">
+  <span class="close" onclick="document.getElementById('panel').style.display='none'">✕</span>
+  <div class="day" id="p-day"></div>
+  <h2 id="p-title"></h2>
+  <ul id="p-list"></ul>
+</div>
+<div id="legend">— <span class="fly">перелёт</span> &nbsp; - - <span class="ground">наземный переезд</span></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const places = [
+  {id:"sao", name:"Сан-Паулу, Бразилия", lat:-23.5505, lng:-46.6333, day:"День 1 · День 15–16",
+   what:["Прилёт в GRU — крупнейший хаб Южной Америки, самые дешёвые билеты из Европы/России","Акклиматизация, прогулка по Авенида Паулиста","День 16: вылет домой из GRU"]},
+  {id:"lim", name:"Лима, Перу", lat:-12.0464, lng:-77.0428, day:"День 2",
+   what:["Перелёт из Сан-Паулу (Sky Airline / JetSMART, $130–200)","Район Мирафлорес, парк Любви","Закат над Тихим океаном"]},
+  {id:"cus", name:"Куско, Перу", lat:-13.5319, lng:-71.9675, day:"День 3–4 · День 6",
+   what:["Перелёт из Лимы (JetSMART / Sky, $26–42)","Акклиматизация на высоте 3400 м — много воды, без алкоголя","Кориканча (Храм Солнца) и крепость Саксайуаман","Возврат из Мачу-Пикчу вечером Дня 6"]},
+  {id:"oll", name:"Ольянтайтамбо, Священная долина", lat:-13.2584, lng:-72.2645, day:"День 4–5",
+   what:["Переезд из Куско (2800 м) для акклиматизации","Руины Писак и рынок ремесленников","Крепость Ольянтайтамбо","Вечерний поезд (~1,5 ч) до Агуас-Кальентес"]},
+  {id:"mp", name:"Мачу-Пикчу, Перу", lat:-13.1631, lng:-72.545, day:"День 5–6",
+   what:["Ранний подъём, автобус к цитадели","Встреча рассвета, экскурсия с гидом (2 часа)","Дневной поезд обратно в Куско"]},
+  {id:"pun", name:"Пуно, оз. Титикака", lat:-15.8402, lng:-70.0219, day:"День 7–8",
+   what:["Туристический автобус из Куско (6–7 ч): Пукара, Андауайлильяс, перевал Ла-Рая","Лодочная прогулка на плавучие острова Урос из тростника","Размещение на берегу озера"]},
+  {id:"lap", name:"Ла-Пас, Боливия", lat:-16.4897, lng:-68.1193, day:"День 8–9",
+   what:["Переезд через границу и автобус (3–4 ч, 3600 м)","Канатная дорога Mi Teleférico","Площадь Мурильо и Дворец правительства","Вечерний перелёт в Уюни (BoA, от $91)"]},
+  {id:"uyu", name:"Уюни, Боливия", lat:-20.4597, lng:-66.825, day:"День 9–11",
+   what:["Экспедиция на джипах по солончаку (2 дня)","«Эффект зеркала» — высокая вероятность в феврале","Отель из соли (ночёвка)","Остров Инкауаси, лагуны с фламинго, гейзеры"]},
+  {id:"spd", name:"Сан-Педро-де-Атакама, Чили", lat:-22.9087, lng:-68.1999, day:"День 12–13",
+   what:["Джип-тур через лагуны Колорадо и Верде до границы Чили","Оазис посреди пустыни Атакама","Гейзеры Эль-Татио на рассвете (выезд в 4 утра)","Днём — перелёт из Каламы (CJC) в Сантьяго, от $38"]},
+  {id:"scl", name:"Сантьяго, Чили", lat:-33.4489, lng:-70.6693, day:"День 13–15",
+   what:["Перелёт из Каламы (JetSMART, от $38)","Пласа-де-Армас и Кафедральный собор","Холм Санта-Лусия","Вечером Дня 15 — перелёт в Сан-Паулу (Sky/LATAM, $150–200)"]},
+  {id:"val", name:"Вальпараисо, Чили", lat:-33.0472, lng:-71.6127, day:"День 14",
+   what:["Однодневная поездка из Сантьяго","Город-порт с разноцветными домами и фуникулёрами","Объект ЮНЕСКО","Вечерний автобус обратно в Сантьяго"]}
+];
+
+const flights = [
+  ["sao","lim"],["lim","cus"],["lap","uyu"],["spd","scl"],["scl","sao"]
+];
+const ground = [
+  ["cus","pun"],["pun","lap"],["uyu","spd"]
+];
+const byId = Object.fromEntries(places.map(p=>[p.id,p]));
+
+const map = L.map('map').setView([-16.5,-66.5], 4);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:'© OpenStreetMap', maxZoom:18
+}).addTo(map);
+
+function line(a,b,dash){ return L.polyline([[byId[a].lat,byId[a].lng],[byId[b].lat,byId[b].lng]],
+  {color:dash?'#58a6ff':'#f0883e', weight:2.5, dashArray:dash?'6 8':null, opacity:.9}); }
+flights.forEach(f=>line(f[0],f[1],false).addTo(map));
+ground.forEach(g=>line(g[0],g[1],true).addTo(map));
+
+function show(p){
+  document.getElementById('p-day').textContent = p.day;
+  document.getElementById('p-title').textContent = p.name;
+  document.getElementById('p-list').innerHTML = p.what.map(w=>`<li>${w}</li>`).join('');
+  document.getElementById('panel').style.display = 'block';
+}
+
+places.forEach(p=>{
+  const m = L.circleMarker([p.lat,p.lng], {radius:8, color:'#0d1117', weight:2, fillColor:'#f0883e', fillOpacity:1})
+    .addTo(map).bindPopup(`<b>${p.name}</b>`);
+  m.on('click', ()=>show(p));
+});
+
+show(places[0]);
+</script>
+</body>
+</html>
